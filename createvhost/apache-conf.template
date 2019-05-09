@@ -1,0 +1,17 @@
+<VirtualHost *:80>
+        #nom de domaine
+	ServerName ###vhost_name### 
+        #on accepte aussi le www
+	ServerAlias www.###vhost_name###
+        #logs d'erreur
+	ErrorLog ${APACHE_LOG_DIR}/###vhost_name###-error.log 
+        #logs de connexion
+	CustomLog ${APACHE_LOG_DIR}/###vhost_name###-access.log common
+        #Définition de la racine des sources php
+	DocumentRoot "###document_root###/###vhost_name###/###sources_dir###"
+	<directory ###document_root###/###vhost_name###/###sources_dir###>
+		Options -Indexes +FollowSymLinks +MultiViews
+		AllowOverride All
+		Require all granted
+	</Directory>
+</VirtualHost>

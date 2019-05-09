@@ -1,0 +1,31 @@
+sourcesFolderName=sources
+headersFolderName=headers
+CC=gcc
+CCFLAGS=-Wall -I $(shell pwd)/$(headersFolderName)/
+LDFLAGS=
+EXEC=run
+SRC= $(wildcard $(sourcesFolderName)/*.c) main.c
+HEADER=$(wildcard $(headersFolderName)/*.h)
+OBJ=$(SRC:.c=.o)
+
+all: $(EXEC)
+
+$(EXEC): $(OBJ)
+	$(CC) -o $@ $^ $(LDFLAGS)
+
+main.o: $(HEADER)
+
+%.o: %.c
+	$(CC) -o $@ -c $< $(CCFLAGS)
+
+
+.PHONY: clean mrproper
+
+clean:
+	@rm -rf *.o
+	@rm -rf sources/*.o
+	@echo "removed object files"
+
+mrproper: clean
+	@rm -rf $(EXEC)
+	@echo "removed executable"
