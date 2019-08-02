@@ -1,25 +1,26 @@
 sourcesFolderName=src
 headersFolderName=src
+
 CC=g++
-CCFLAGS=-Wall -I $(shell pwd)/$(headersFolderName)/
+CCFLAGS=-Wall 
 LDFLAGS=
 EXEC=bin/run
-SRC= $(wildcard $(sourcesFolderName)/*.cpp) main.cpp
+BUILD=build
+SRC= $(wildcard $(sourcesFolderName)/*.cpp)
 HEADER=$(wildcard $(headersFolderName)/*.h)
-OBJ=$(SRC:src/%.cpp=build/%.o)
-OBJF=$(OBJ:%.cpp=build/%.o)
+OBJ=$(SRC:$(sourcesFolderName)/%.cpp=$(BUILD)/%.o)
 
 all: $(EXEC)
 
-$(EXEC): $(OBJF)
+$(EXEC): $(OBJ)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-build/main.o: $(HEADER)
+$(BUILD)/main.o: $(HEADER)
 
-build/%.o: %.cpp
+$(BUILD)/%.o: %.cpp
 	$(CC) -o $@ -c $< $(CCFLAGS)
 
-build/%.o: src/%.cpp
+$(BUILD)/%.o: $(sourcesFolderName)/%.cpp
 	$(CC) -o $@ -c $< $(CCFLAGS)
 
 
@@ -27,7 +28,7 @@ build/%.o: src/%.cpp
 
 clean:
 	@rm -rf *.o
-	@rm -rf build/*.o
+	@rm -rf $(BUILD)/*.o
 	@echo "removed object files"
 
 mrproper: clean
